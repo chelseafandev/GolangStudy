@@ -2,6 +2,12 @@ module GolangStudy
 
 go 1.16
 
-require GolangStudy/accounts v1.16.0
+require (
+	GolangStudy/tuckerlecture/accounts v1.16.0
+	GolangStudy/tuckerlecture/datastruct v1.16.0
+)
 
-replace GolangStudy/accounts v1.16.0 => ./accounts
+replace (
+	GolangStudy/tuckerlecture/accounts v1.16.0 => ./accounts
+	GolangStudy/tuckerlecture/datastruct v1.16.0 => ./datastruct
+)
