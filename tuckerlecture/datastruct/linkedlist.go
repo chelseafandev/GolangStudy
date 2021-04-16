@@ -13,6 +13,10 @@ type LinkedList struct {
 	Tail *Node
 }
 
+func NewLinkedList() *LinkedList {
+	return &LinkedList{}
+}
+
 func (l *LinkedList) AddNode(val int) {
 	if l.Root == nil {
 		l.Root = &Node{Val: val}
@@ -29,7 +33,6 @@ func (l *LinkedList) AddNode(val int) {
 func (l *LinkedList) RemoveNode(target *Node) {
 	if target == l.Root {
 		l.Root = l.Root.Next
-		l.Root.Prev = nil
 		target.Next = nil
 		return
 	}
@@ -47,6 +50,26 @@ func (l *LinkedList) RemoveNode(target *Node) {
 	}
 
 	target.Next = nil
+}
+
+func (l *LinkedList) Front() int {
+	if l.Root != nil {
+		return l.Root.Val
+	}
+
+	return -1
+}
+
+func (l *LinkedList) Back() int {
+	if l.Tail != nil {
+		return l.Tail.Val
+	}
+
+	return -1
+}
+
+func (l *LinkedList) Empty() bool {
+	return l.Root == nil
 }
 
 func (l *LinkedList) PrintNodes() {

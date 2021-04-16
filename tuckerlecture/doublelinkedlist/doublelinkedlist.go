@@ -3,7 +3,7 @@ package main
 import "GolangStudy/tuckerlecture/datastruct"
 
 func main() {
-	list := &datastruct.LinkedList{}
+	list := datastruct.NewLinkedList()
 	list.AddNode(0)
 	for i := 1; i < 10; i++ {
 		list.AddNode(i)
