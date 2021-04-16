@@ -1,6 +1,9 @@
 package main
 
-import "GolangStudy/tuckerlecture/datastruct"
+import (
+	"GolangStudy/tuckerlecture/datastruct"
+	"fmt"
+)
 
 func main() {
 	binaryTree := datastruct.NewBinaryTree(5)
@@ -14,4 +17,13 @@ func main() {
 	binaryTree.Root.AddNode(9)
 
 	binaryTree.PrintBinaryTree()
+	fmt.Println()
+
+	val := 5
+	isFound, count := binaryTree.Search(val)
+	if isFound {
+		fmt.Println("found", val, ", count:", count)
+	} else {
+		fmt.Println("not found", val, ", count:", count)
+	}
 }

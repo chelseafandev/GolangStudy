@@ -64,3 +64,27 @@ func (b *BinaryTree) PrintBinaryTree() {
 		}
 	}
 }
+
+func (b *BinaryTreeNode) search(val int, count int) (bool, int) {
+	if b.Val > val {
+		if b.Left != nil {
+			count++
+			return b.Left.search(val, count)
+		} else {
+			return false, count
+		}
+	} else if b.Val < val {
+		if b.Right != nil {
+			count++
+			return b.Right.search(val, count)
+		} else {
+			return false, count
+		}
+	} else {
+		return true, count
+	}
+}
+
+func (b *BinaryTree) Search(val int) (bool, int) {
+	return b.Root.search(val, 1)
+}
