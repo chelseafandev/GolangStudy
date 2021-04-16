@@ -1,6 +1,9 @@
 package main
 
-import "GolangStudy/tuckerlecture/datastruct"
+import (
+	"GolangStudy/tuckerlecture/datastruct"
+	"fmt"
+)
 
 func main() {
 	val := 1
@@ -20,5 +23,10 @@ func main() {
 	}
 
 	tree.DFS_recursive()
+	fmt.Println()
+
 	tree.DFS_stack()
+	fmt.Println()
+
+	tree.BFS()
 }
