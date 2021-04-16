@@ -16,6 +16,7 @@ func NewBinaryTree(val int) *BinaryTree {
 	return &BinaryTree{Root: &BinaryTreeNode{Val: val}}
 }
 
+// Binary Search Tree를 구성한다
 func (b *BinaryTreeNode) AddNode(val int) {
 	if b.Val > val {
 		if b.Left == nil {
