@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GolangStudy/accounts"
+	"GolangStudy/tuckerlecture/accounts"
 	"fmt"
 )
 
