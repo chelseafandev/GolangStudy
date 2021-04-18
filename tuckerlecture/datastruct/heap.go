@@ -37,6 +37,10 @@ func (h *Heap) Pop() int {
 	last := h.list[len(h.list)-1]
 	h.list = h.list[:len(h.list)-1]
 
+	if len(h.list) == 0 {
+		return top
+	}
+
 	h.list[0] = last
 	idx := 0
 	for idx < len(h.list) {
