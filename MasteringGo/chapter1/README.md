@@ -41,7 +41,7 @@ func main() {
 <br>
 
 ### Go 패키지 다운로드하기
-해당 챕터를 집필하는 시점의 stable 버전은 1.9.1 이므로 go module(1.11에 도입)에 대한 설명이 없다. <br>
+해당 챕터를 집필하는 시점의 stable 버전은 1.9.1 이므로 go module([1.11에 도입](https://golang.org/doc/go1.11#modules))에 대한 설명이 없다. <br>
 go module을 기반으로한 외부 패키지 사용 방법을 기술하겠다.
 
 <br>
@@ -80,7 +80,7 @@ go module을 기반으로한 외부 패키지 사용 방법을 기술하겠다.
 go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설명하겠다.
 
 1. go.mod 수정
-    * 추가할 패키지 정보를 go.mod에 추가한다. 여기서는 gocolly/colly를 예로 들겠다.
+    * 추가할 패키지 정보를 go.mod에 추가한다. 여기서는 [gocolly/colly](https://github.com/gocolly/colly)를 예로 들겠다.
     ```go
     module learngo
 
@@ -133,3 +133,47 @@ go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설�
     ```
     /home/jhlee/go/src/learngo> go mod tidy
     ```
+<br>
+
+### 커맨드라인 인수 다루기
+커맨드라인 인수를 가져오려면 os 패키지를 이용해야한다. 소스 라인의 주석을 참조바란다.
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+	// os.Args는 string값을 가진 Go 슬라이스다.
+	// 이 슬라이스의 첫 번째 원소(arguments[0])는 실행한 프로그램의 이름이다.
+	fmt.Println("len(os.Agrs) =", len(os.Args))
+	if len(os.Args) == 1 {
+		fmt.Println("Please give one or more floats.")
+		os.Exit(1)
+	}
+
+	arguments := os.Args
+	fmt.Println("arguments =", arguments)
+
+	min, _ := strconv.ParseInt(arguments[1], 0, 64)
+	max, _ := strconv.ParseInt(arguments[1], 0, 64)
+
+	// 입력된 커맨드라인 인수들 중(첫 번째 원소인 프로그램 이름은 제외)에서 최소값과 최대값을 구한다.
+	for i := 1; i < len(os.Args); i++ {
+		n, _ := strconv.ParseInt(arguments[i], 0, 64)
+		if n < min {
+			min = n
+		}
+
+		if n > max {
+			max = n
+		}
+	}
+
+	fmt.Println("Min:", min)
+	fmt.Println("Max:", max)
+}
+```
