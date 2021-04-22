@@ -10,5 +10,13 @@ Mastering GO 정리 노트이며, 챕터 별 핵심 내용을 나름대로 정�
 (챕터 별로 폴더를 생성했고, 해당 폴더 내에 README.md 파일이 포함되어있다. Link를 클릭하면 해당 챕터로 이동한다.)
 
 ## 1장 Go 언어와 운영 체제 [Link](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo/chapter1)
+- godoc 유틸리티
+- 중괄호 작성 스타일을 따를 것
+- Go 패키지 다운로드하기
+	- Module을 사용해서 빌드하는 연습을 하자😎
+	- 외부 패키지 사용하기
+- 커맨드라인 인수 다루기
+- Go 언어에서 에러 처리하기
+	- 에러 처리하기
 
 ## 2장 Go 언어의 내부 살펴보기 [Link](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo/chapter2)
