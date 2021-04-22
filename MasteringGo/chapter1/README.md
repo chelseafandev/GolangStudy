@@ -51,7 +51,7 @@ func main() {
 
 ### Go 패키지 다운로드하기
 이 책에서 해당 챕터를 집필하는 시점의 stable 버전은 1.9.1 이므로 go module([1.11에 도입](https://golang.org/doc/go1.11#modules))에 대한 설명이 없다. <br>
-go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술하겠다!!
+go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술하겠다.
 
 <br>
 
