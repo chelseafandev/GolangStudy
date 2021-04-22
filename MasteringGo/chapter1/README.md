@@ -8,6 +8,8 @@
 		- [Module을 사용해서 빌드하는 연습을 하자😎](#module을-사용해서-빌드하는-연습을-하자)
 		- [외부 패키지 사용하기](#외부-패키지-사용하기)
 	- [커맨드라인 인수 다루기](#커맨드라인-인수-다루기)
+	- [Go 언어에서 에러 처리하기](#go-언어에서-에러-처리하기)
+		- [에러 처리하기](#에러-처리하기)
 
 [뒤로](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo)
 
@@ -179,6 +181,108 @@ func main() {
 
 		if n > max {
 			max = n
+		}
+	}
+
+	fmt.Println("Min:", min)
+	fmt.Println("Max:", max)
+}
+```
+<br>
+
+### Go 언어에서 에러 처리하기
+새로운 error 변수를 생성하려면 표준 Go 패키지인 errors에서 제공하는 New() 함수를 호출해야 한다.
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func returnError(a, b int) error {
+	if a == b {
+		// 새로운 error 변수를 생성하는 방법
+		err := errors.New("Error in returnError() function!")
+		return err
+	} else {
+		return nil
+	}
+}
+
+func main() {
+	err := returnError(1, 2)
+	if err == nil {
+		fmt.Println("returnError() ended normally!")
+	} else {
+		fmt.Println(err)
+	}
+
+	err = returnError(10, 10)
+	if err == nil {
+		fmt.Println("returnError() ended normally!")
+	} else {
+		fmt.Println(err)
+	}
+
+	// Error() 메소드를 통해 error 변수를 string 타입으로 변환할 수 있음
+	if err.Error() == "Error in returnError() function!" {
+		fmt.Println("!!")
+	}
+}
+```
+
+#### 에러 처리하기
+앞서 커맨드라인 인수 다루기에서 사용했던 예제 코드를 에러 처리가 가능하도록 개선해보겠다.
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+	// os.Args는 string값을 가진 Go 슬라이스다.
+	// 이 슬라이스의 첫 번째 원소(arguments[0])는 실행한 프로그램의 이름이다.
+	fmt.Println("len(os.Agrs) =", len(os.Args))
+	if len(os.Args) == 1 {
+		fmt.Println("Please give one or more integer.")
+		os.Exit(1)
+	}
+
+	arguments := os.Args
+	// errors.New()를 통해 새로운 error 변수를 생성함
+	var err error = errors.New("An error")
+	k := 1
+	var n int64
+
+	for err != nil {
+		if k >= len(arguments) {
+			fmt.Println("None of the arguments is a integer!")
+			return
+		}
+		n, err = strconv.ParseInt(arguments[k], 0, 64)
+		k++
+	}
+
+	min, max := n, n
+
+	// 입력된 커맨드라인 인수들 중(첫 번째 원소인 프로그램 이름은 제외)에서 최소값과 최대값을 구한다.
+	for i := 1; i < len(os.Args); i++ {
+		n, err := strconv.ParseInt(arguments[i], 0, 64)
+		if err == nil {
+			if n < min {
+				min = n
+			}
+
+			if n > max {
+				max = n
+			}
+		} else {
+			fmt.Println(err)
 		}
 	}
 
