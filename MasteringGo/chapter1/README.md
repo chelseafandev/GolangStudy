@@ -188,7 +188,6 @@ func main() {
 	fmt.Println("Max:", max)
 }
 ```
-<<<<<<< HEAD
 <br>
 
 ### Go 언어에서 에러 처리하기
@@ -291,5 +290,3 @@ func main() {
 	fmt.Println("Max:", max)
 }
 ```
-=======
->>>>>>> c2d9d06d671c851bb2a0e5bb82253831d6b678db
