@@ -20,3 +20,5 @@ Mastering GO 정리 노트이며, 챕터 별 핵심 내용을 나름대로 정�
 	- 에러 처리하기
 
 ## 2장 Go 언어의 내부 살펴보기 [Link](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo/chapter2)
+ - 가비지 컬렉션
+ - 삼색 알고리즘
