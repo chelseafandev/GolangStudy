@@ -1,8 +1,11 @@
 ## 2장 Go 언어의 내부 살펴보기
 
 - [2장 Go 언어의 내부 살펴보기](#2장-go-언어의-내부-살펴보기)
-  - [가비지 컬렉션](#가비지-컬렉션)
-  - [삼색 알고리즘](#삼색-알고리즘)
+	- [가비지 컬렉션](#가비지-컬렉션)
+	- [삼색 알고리즘(tricolor mark-and-sweep alogorithm)](#삼색-알고리즘tricolor-mark-and-sweep-alogorithm)
+	- [Go 언어 가비지 컬렉터의 구체적인 작동 방식](#go-언어-가비지-컬렉터의-구체적인-작동-방식)
+		- [삼색 알고리즘의 불변 속성을 유지하기 위한 constraints](#삼색-알고리즘의-불변-속성을-유지하기-위한-constraints)
+	- [언세이프(Unsafe) 코드 및 패키지](#언세이프unsafe-코드-및-패키지)
 
 [뒤로](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo)
 
@@ -64,4 +67,60 @@ gc 17 @30.304s 0%: 0.015+0.15+0.002 ms clock, 0.12+0/0.13/0+0.016 ms cpu, <span 
 gc 18 @35.338s 0%: 0.026+0.34+0.003 ms clock, 0.21+0/0.28/0.063+0.030 ms cpu, <span style="color:red">95->95->0 MB</span>, 96 MB goal, 8 P <br>
 gc 19 @40.360s 0%: 0.015+0.14+0.003 ms clock, 0.12+0/0.12/0.002+0.024 ms cpu, <span style="color:red">95->95->0 MB</span>, 96 MB goal, 8 P <br>
 
-### 삼색 알고리즘
+### 삼색 알고리즘(tricolor mark-and-sweep alogorithm)
+Go 언어의 가비지 컬렉터는 삼색 알고리즘에 따라 작동한다. 삼색 알고리즘의 핵심 원리는 힙에 있는 오브젝트를 <br>
+이 알고리즘에 따라 세 가지 색깔로 지정된 집합으로 나누는데 있다.
+* 흰색 집합(white set): 프로그램에서 더 이상 접근할 수 없어서 가비지 컬렉션 대상이 되는 오브젝트
+* 회색 집합(gray set): 프로그램이 현재 사용하고 있지만 흰색 오브젝트를 가리킬 수도 있어서 검사 과정을 거쳐야하는 오브젝트
+* 검은색 집합(black set): 프로그램이 사용하고 있으며, 흰색 집합의 오브젝트를 가리키는 포인터가 확실히 없는 오브젝트
+
+여기서 주목할 점은 검은색 집합에서 곧바로 흰색 집합으로 갈 수 없으며, 검은색 집합에 있는 오브젝트는 흰색 집합의 오브젝트를 직접 가리킬 수 없다.
+
+### Go 언어 가비지 컬렉터의 구체적인 작동 방식
+1) 프로그램의 실행을 잠시 멈춘다.
+2) 프로그램의 힙에서 접근할 수 있는 오브젝트를 모두 방문한 뒤에 적절히 표시(mark)한다(흰색, 회색, 검은색 중 하나로 표시).
+3) 접근할 수 없는 오브젝트를 쓸어(sweep) 담는다.
+
+#### 삼색 알고리즘의 불변 속성을 유지하기 위한 constraints
+* 새로운 오브젝트는 반드시 회색 집합으로 가야한다.
+* 프로그램에 나온 포인터가 이동하면 포인터가 가리키던 오브젝트도 회색으로 변경된다.
+* 포인터가 변경될 때마다 쓰기 장벽(write barrier)이라 부르는 Go 코드가 자동으로 실행되면서 색깔 변경 작업을 수행한다. <br>
+  (쓰기 장벽 코드를 실행함으로써 발생하는 지연 시간은 가비지 컬렉터를 동시에 실행하기 위해 치러야할 대가인 셈)
+
+### 언세이프(Unsafe) 코드 및 패키지
+언세이프 코드란 Go 언어의 타입 안정성 및 메모리 보안 검사를 거치지 않는 코드를 말한다. <br>
+언세이프 코드라고 하면 대부분 포인터에 관련된 코드를 의미한다.
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	array := []int{0, 1, -2, 3, 4}
+	pointer := &array[0]
+	fmt.Print(*pointer, " ")
+
+	// uintptr is an integer type that is large enough to hold the bit pattern of any pointer.
+	//
+	memoryAddress := uintptr(unsafe.Pointer(pointer)) + unsafe.Sizeof(array[0])
+
+	for i := 0; i < len(array)-1; i++ {
+		pointer = (*int)(unsafe.Pointer(memoryAddress))
+		fmt.Print(*pointer, " ")
+		memoryAddress = uintptr(unsafe.Pointer(pointer)) + unsafe.Sizeof(array[0])
+	}
+
+	fmt.Println()
+
+	// 메모리 주소에 존재하지 않는 배열의 원소에 접근하고 있으나
+	// 이 코드에서는 unsafe 패키지를 사용하고 있기 때문에 Go 컴파일러에서 이런 논리적 에러를 찾아 주지 않는다.
+	pointer = (*int)(unsafe.Pointer(memoryAddress))
+	fmt.Print("One more: ", *pointer, " ")
+	memoryAddress = uintptr(unsafe.Pointer(pointer)) + unsafe.Sizeof(array[0])
+	fmt.Println()
+}
+```

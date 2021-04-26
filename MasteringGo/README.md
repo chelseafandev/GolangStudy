@@ -20,5 +20,8 @@ Mastering GO 정리 노트이며, 챕터 별 핵심 내용을 나름대로 정�
 	- 에러 처리하기
 
 ## 2장 Go 언어의 내부 살펴보기 [Link](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo/chapter2)
- - 가비지 컬렉션
- - 삼색 알고리즘
+- 가비지 컬렉션
+- 삼색 알고리즘(tricolor mark-and-sweep alogorithm)
+- Go 언어 가비지 컬렉터의 구체적인 작동 방식
+  - 삼색 알고리즘의 불변 속성을 유지하기 위한 constraints
+- 언세이프(Unsafe) 코드 및 패키지
