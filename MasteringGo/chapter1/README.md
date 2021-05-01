@@ -7,11 +7,13 @@
 	- [Go 패키지 다운로드하기](#go-패키지-다운로드하기)
 		- [Module을 사용해서 빌드하는 연습을 하자😎](#module을-사용해서-빌드하는-연습을-하자)
 		- [외부 패키지 사용하기](#외부-패키지-사용하기)
+	- [유닉스 stdin, stdout, stderr](#유닉스-stdin-stdout-stderr)
 	- [커맨드라인 인수 다루기](#커맨드라인-인수-다루기)
 	- [Go 언어에서 에러 처리하기](#go-언어에서-에러-처리하기)
 		- [에러 처리하기](#에러-처리하기)
 
 [뒤로](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo)
+<br>
 
 ### godoc 유틸리티
 godoc을 사용하면 인터넷에 연결돼 있지 않아도 Go 함수나 패키지에 대한 문서를 쉽게 볼 수 있다. <br>
@@ -55,8 +57,6 @@ func main() {
 이 책에서 해당 챕터를 집필하는 시점의 stable 버전은 1.9.1 이므로 go module([1.11에 도입](https://golang.org/doc/go1.11#modules))에 대한 설명이 없다. <br>
 go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술하겠다.
 
-<br>
-
 #### Module을 사용해서 빌드하는 연습을 하자😎
 로컬에서 작업한 패키지 정보를 사용하는 방법부터 설명하겠다.
 
@@ -85,7 +85,6 @@ go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술
 
     replace learngo/banking v1.16.0 => ./ banking
     ```
-<br>
 
 #### 외부 패키지 사용하기
 go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설명하겠다.
@@ -144,6 +143,24 @@ go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설�
     ```
     /home/jhlee/go/src/learngo> go mod tidy
     ```
+<br>
+
+### 유닉스 stdin, stdout, stderr
+기본적으로 모든 유닉스 시스템은 /dev/stdin, /dev/stdout, /dev/stderr라는 세 가지의 특수한 표준 파일명을 사용한다. <br>
+각각에 대한 파일 디스크립터는 0, 1, 2다. 이러한 세 가지 파일 디스크립터를 표준 입력, 표준 출력, 표준 에러라고도 부른다. <br>
+아래 예제는 표준 에러 출력을 /dev/null 디바이스로 redirection하고 있다. 이는 표준 에러를 무시하겠다는 의미다.
+```
+go run stdERR.go 2>/dev/null
+```
+표준 출력(1)과 표준 에러(2)의 결과를 모두 같은 파일에 저장하고 싶다면, 표준 에러에 대한 파일 디스크립터(2)를 표준 출력에 대한 <br>
+파일 디스크립터(1)로 redirection하면 된다. 예를 들면 아래와 같다.
+```
+go run stdERR.go >/tmp/output 2>&1
+```
+마지막으로 표준 출력과 표준 에러를 모두 /dev/null 디바이스로 보내버릴 수도 있다.
+```
+go run stdERR.go >/dev/null 2>&1
+```
 <br>
 
 ### 커맨드라인 인수 다루기

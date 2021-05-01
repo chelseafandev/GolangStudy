@@ -6,8 +6,11 @@
 	- [Go 언어 가비지 컬렉터의 구체적인 작동 방식](#go-언어-가비지-컬렉터의-구체적인-작동-방식)
 		- [삼색 알고리즘의 불변 속성을 유지하기 위한 constraints](#삼색-알고리즘의-불변-속성을-유지하기-위한-constraints)
 	- [언세이프(Unsafe) 코드 및 패키지](#언세이프unsafe-코드-및-패키지)
+	- [defer 키워드](#defer-키워드)
+	- [panic 함수와 recover 함수](#panic-함수와-recover-함수)
 
 [뒤로](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo)
+<br>
 
 ### 가비지 컬렉션
 가비지 컬렉션이란 더 이상 사용하지 않는 메모리 공산을 해제하는 프로세스다. 다시 말해 가비지 컬렉터는 <br>
@@ -66,6 +69,7 @@ GODEBUG=gctrace=1 go run main.go
 gc 17 @30.304s 0%: 0.015+0.15+0.002 ms clock, 0.12+0/0.13/0+0.016 ms cpu, <span style="color:red">190->190->0 MB</span>, 191 MB goal, 8 P <br>
 gc 18 @35.338s 0%: 0.026+0.34+0.003 ms clock, 0.21+0/0.28/0.063+0.030 ms cpu, <span style="color:red">95->95->0 MB</span>, 96 MB goal, 8 P <br>
 gc 19 @40.360s 0%: 0.015+0.14+0.003 ms clock, 0.12+0/0.12/0.002+0.024 ms cpu, <span style="color:red">95->95->0 MB</span>, 96 MB goal, 8 P <br>
+<br>
 
 ### 삼색 알고리즘(tricolor mark-and-sweep alogorithm)
 Go 언어의 가비지 컬렉터는 삼색 알고리즘에 따라 작동한다. 삼색 알고리즘의 핵심 원리는 힙에 있는 오브젝트를 <br>
@@ -75,6 +79,7 @@ Go 언어의 가비지 컬렉터는 삼색 알고리즘에 따라 작동한다. 
 * 검은색 집합(black set): 프로그램이 사용하고 있으며, 흰색 집합의 오브젝트를 가리키는 포인터가 확실히 없는 오브젝트
 
 여기서 주목할 점은 검은색 집합에서 곧바로 흰색 집합으로 갈 수 없으며, 검은색 집합에 있는 오브젝트는 흰색 집합의 오브젝트를 직접 가리킬 수 없다.
+<br>
 
 ### Go 언어 가비지 컬렉터의 구체적인 작동 방식
 1) 프로그램의 실행을 잠시 멈춘다.
@@ -86,6 +91,7 @@ Go 언어의 가비지 컬렉터는 삼색 알고리즘에 따라 작동한다. 
 * 프로그램에 나온 포인터가 이동하면 포인터가 가리키던 오브젝트도 회색으로 변경된다.
 * 포인터가 변경될 때마다 쓰기 장벽(write barrier)이라 부르는 Go 코드가 자동으로 실행되면서 색깔 변경 작업을 수행한다. <br>
   (쓰기 장벽 코드를 실행함으로써 발생하는 지연 시간은 가비지 컬렉터를 동시에 실행하기 위해 치러야할 대가인 셈)
+<br>
 
 ### 언세이프(Unsafe) 코드 및 패키지
 언세이프 코드란 Go 언어의 타입 안정성 및 메모리 보안 검사를 거치지 않는 코드를 말한다. <br>
@@ -122,5 +128,67 @@ func main() {
 	fmt.Print("One more: ", *pointer, " ")
 	memoryAddress = uintptr(unsafe.Pointer(pointer)) + unsafe.Sizeof(array[0])
 	fmt.Println()
+}
+```
+<br>
+
+### defer 키워드
+어떤 함수(A)를 호출하는 문장 앞에 defer 키워드를 붙이면, 이 defer문을 담고 있는 함수가 리턴될 때까지 함수(A)의 실행을 미룬다. <br>
+defer문을 담고 있는 함수가 리턴된 후에, defer 키워드를 이용해 실행이 미뤄진 함수가 호출되는 순서는 LIFO방식을 따른다.
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func d3() {
+	for i := 3; i > 0; i-- {
+		defer func(n int) {
+			fmt.Print(n, " ")
+		}(i)
+	}
+}
+
+func main() {
+	d3()
+}
+```
+<br>
+
+### panic 함수와 recover 함수
+pnaic() 함수는 Go 언어에서 기본으로 제공하는 것으로, 기존 Go 프로그램의 실행 흐름을 종료하고 패닉 상태에 빠진다. <br>
+recover() 함수 역시 Go언에서 기본으로 제공하며 panic()으로 인해 패닉 상태에 빠졌던 Go 루틴으로부터 제어권을 다시 가져오게 해준다.
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func a() {
+	fmt.Println("Inside a()")
+	defer func() {
+		if c := recover(); c != nil {
+			fmt.Println("Recover inside a()!")
+		}
+	}()
+	fmt.Println("About to call b()")
+	b()
+	fmt.Println("b() exited!")
+	fmt.Println("Exiting a()")
+}
+
+func b() {
+	fmt.Println("Inside b()")
+	panic("Panic in b()!")
+	fmt.Println("Exiting b()")
+}
+
+func main() {
+	a()
+	fmt.Println("main() ended!")
 }
 ```
