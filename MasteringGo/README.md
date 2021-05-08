@@ -28,3 +28,6 @@ Mastering GO 정리 노트이며, 챕터 별 핵심 내용을 나름대로 정�
 - 언세이프(Unsafe) 코드 및 패키지
 - defer 키워드
 - panic 함수와 recover 함수
+- Go 언어의 슬라이스
+  - sort.Slice()로 슬라이스 정렬하기
+- Go 언어의 상수 생성자 iota
