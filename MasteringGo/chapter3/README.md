@@ -1,9 +1,9 @@
 ## 3장 Go 언어의 기본 데이터 타입
 
 - [3장 Go 언어의 기본 데이터 타입](#3장-go-언어의-기본-데이터-타입)
-  - [Go 언어의 슬라이스](#go-언어의-슬라이스)
-    - [sort.Slice()로 슬라이스 정렬하기](#sortslice로-슬라이스-정렬하기)
-  - [Go 언어의 상수 생성자 iota](#go-언어의-상수-생성자-iota)
+	- [Go 언어의 슬라이스](#go-언어의-슬라이스)
+		- [sort.Slice()로 슬라이스 정렬하기](#sortslice로-슬라이스-정렬하기)
+	- [Go 언어의 상수 생성자 iota](#go-언어의-상수-생성자-iota)
 
 [뒤로](https://github.com/junhaeng90/GolangStudy/tree/main/MasteringGo)
 <br>
