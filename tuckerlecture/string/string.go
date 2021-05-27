@@ -15,6 +15,7 @@ func main() {
 	// go에서는 UTF-8값을 저장하는 타입 rune을 제공함
 	s2 := []rune(s)
 	fmt.Println("rune array size:", len(s2))
+	fmt.Println(s2[6], string(s2[0]))
 	fmt.Println(s2[6], string(s2[6]))
 	fmt.Println(s2[7], string(s2[7]))
 }
