@@ -4,7 +4,28 @@
 
 </div>
 
-## 컴맹을 위한 프로그래밍 기초 강좌 [Link](https://www.youtube.com/playlist?list=PLy-g2fnSzUTAaDcLW7hpq0e8Jlt7Zfgd6)
+# 컴맹을 위한 프로그래밍 기초 강좌 [Link](https://www.youtube.com/playlist?list=PLy-g2fnSzUTAaDcLW7hpq0e8Jlt7Zfgd6)
+
+- [컴맹을 위한 프로그래밍 기초 강좌 Link](#컴맹을-위한-프로그래밍-기초-강좌-link)
+  - [함수](#함수)
+  - [배열과 문자열](#배열과-문자열)
+  - [구조체](#구조체)
+  - [포인터](#포인터)
+  - [Slice](#slice)
+  - [Instance](#instance)
+  - [Data Structure](#data-structure)
+    - [Linked List & Doubly Linked List](#linked-list--doubly-linked-list)
+    - [Stack](#stack)
+    - [Queue](#queue)
+    - [Tree](#tree)
+      - [Binary Tree](#binary-tree)
+      - [DFS](#dfs)
+      - [BFS](#bfs)
+    - [Heap](#heap)
+    - [Map](#map)
+  - [Thread](#thread)
+  - [Channel](#channel)
+<br>
 
 ## 함수
 * Function [소스링크](https://github.com/junhaeng90/GolangStudy/main/tuckerlecture/function/function.go)
