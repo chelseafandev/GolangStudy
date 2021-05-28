@@ -174,4 +174,6 @@ go언어로 다양한 자료구조를 구현 [소스링크](https://github.com/j
 * CarFactory 예제를 통한 channel의 개념 숙지 [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/carfactory/carfactory.go)
 
 ## Interface
-* snadwitch 예제를 통한 Interface의 개념 숙지 [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/sandwitch/sandwitch.go)
+* sandwitch 예제를 통한 Interface의 개념 숙지 [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/sandwitch/sandwitch.go)
+  
+    * go에서 interface를 사용하기 위해서는 이 interface를 사용할 곳에서 interface내에 정의한 함수를 구현하기만 하면된다.
