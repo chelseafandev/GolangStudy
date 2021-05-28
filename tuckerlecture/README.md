@@ -160,6 +160,15 @@ go언어로 다양한 자료구조를 구현 [소스링크](https://github.com/j
 ## Channel
 * channel [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/channel/channel.go)
 
+    * goroutine 간의 데이터 송수신을 위해 사용한다.
+    * 채널로 보내는 경우 표기법
+    ```go
+    채널변수 <- 보낼값
+    ```
+    * 채널로부터 받는 경우 표기법
+    ```go
+    받을변수 <- 채널변수
+    ```
 * select 구문 [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/select/select.go)
 
 * CarFactory 예제를 통한 channel의 개념 숙지 [소스링크](https://github.com/junhaeng90/GolangStudy/blob/main/tuckerlecture/carfactory/carfactory.go)
