@@ -1,4 +1,4 @@
-package main
+package https_server
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/golang/gddo/httputil/header"
@@ -223,20 +224,17 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	send_200_response(w)
 }
 
-func main() {
+func StartServer(ip string, port int, location string) {
 	// server info (ip, port)
-	server_ip := "127.0.0.1"
-	server_port := "18443"
-	conn_info := server_ip + ":" + server_port
+	conn_info := ip + ":" + strconv.Itoa(port)
 
 	// set location & handler
-	location := "/test"
 	callback := handleRequest
 	http.HandleFunc(location, callback)
 
 	// start tls server
-	server_cert := "certs/server.crt"
-	server_key := "certs/server.key"
+	server_cert := "/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.crt"
+	server_key := "/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.key"
 	err := http.ListenAndServeTLS(conn_info, server_cert, server_key, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
