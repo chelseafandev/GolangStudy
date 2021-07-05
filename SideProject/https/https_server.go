@@ -224,7 +224,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	send_200_response(w)
 }
 
-func StartServer(ip string, port int, location string) {
+func StartServer(ip string, port int, location string, cert string, key string) {
 	// server info (ip, port)
 	conn_info := ip + ":" + strconv.Itoa(port)
 
@@ -233,9 +233,7 @@ func StartServer(ip string, port int, location string) {
 	http.HandleFunc(location, callback)
 
 	// start tls server
-	server_cert := "/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.crt"
-	server_key := "/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.key"
-	err := http.ListenAndServeTLS(conn_info, server_cert, server_key, nil)
+	err := http.ListenAndServeTLS(conn_info, cert, key, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
