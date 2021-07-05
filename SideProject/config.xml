@@ -11,5 +11,6 @@
         <location>/test</location>
         <certpath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.crt</certpath>
         <keypath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.key</keypath>
+        <timeout></timeout>
     </https>
 </options>
