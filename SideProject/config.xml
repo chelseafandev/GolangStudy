@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <options>
-    <tlsconnection>
+    <http>
+        <ip>127.0.0.1</ip>
+        <port>18888</port>
+        <location>/test</location>
+    </http>
+    <https>
         <ip>127.0.0.1</ip>
         <port>18443</port>
         <location>/test</location>
         <certpath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.crt</certpath>
         <keypath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.key</keypath>
-    </tlsconnection>
+    </https>
 </options>

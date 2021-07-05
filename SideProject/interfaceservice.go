@@ -10,11 +10,18 @@ import (
 )
 
 type Options struct {
-	XMLName       tlsconnection `xml:"options"`
-	Tlsconnection tlsconnection `xml:"tlsconnection"`
+	XMLName httpconnection  `xml:"options"`
+	Http    httpconnection  `xml:"http"`
+	Https   httpsconnection `xml:"https"`
 }
 
-type tlsconnection struct {
+type httpconnection struct {
+	Ip       string `xml:"ip"`
+	Port     int    `xml:"port"`
+	Location string `xml:"location"`
+}
+
+type httpsconnection struct {
 	Ip       string `xml:"ip"`
 	Port     int    `xml:"port"`
 	Location string `xml:"location"`
@@ -41,10 +48,24 @@ func readOptions(configpath string) {
 	if err_Unmarshal != nil {
 		log.Fatal(err_Unmarshal)
 	}
+
+	fmt.Println("options.Http.Ip:", options.Http.Ip)
+	fmt.Println("options.Http.Port:", options.Http.Port)
+	fmt.Println("options.Http.Location:", options.Http.Location)
+	fmt.Println()
+
+	fmt.Println("options.Https.Ip:", options.Https.Ip)
+	fmt.Println("options.Https.Port:", options.Https.Port)
+	fmt.Println("options.Https.Location:", options.Https.Location)
+	fmt.Println("options.Https.Certpath:", options.Https.Certpath)
+	fmt.Println("options.Https.Keypath:", options.Https.Keypath)
+	fmt.Println()
 }
 
 func main() {
-	fmt.Println("start https server!")
+	fmt.Println("read config.xml!")
 	readOptions("config.xml")
-	https_server.StartServer(options.Tlsconnection.Ip, options.Tlsconnection.Port, options.Tlsconnection.Location, options.Tlsconnection.Certpath, options.Tlsconnection.Keypath)
+
+	fmt.Println("start https server!")
+	https_server.StartServer(options.Https.Ip, options.Https.Port, options.Https.Location, options.Https.Certpath, options.Https.Keypath)
 }
