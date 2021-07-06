@@ -2,6 +2,7 @@ package xmlparser
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -12,9 +13,7 @@ type Options struct {
 }
 
 type httpconnection struct {
-	Ip       string `xml:"ip"`
-	Port     int    `xml:"port"`
-	Location string `xml:"location"`
+	Session []session `xml:"session"`
 }
 
 type httpsconnection struct {
@@ -23,6 +22,14 @@ type httpsconnection struct {
 	Location string `xml:"location"`
 	Certpath string `xml:"certpath"`
 	Keypath  string `xml:"keypath"`
+	Timeout  string `xml:"timeout"`
+}
+
+type session struct {
+	Ip       string `xml:"ip"`
+	Port     int    `xml:"port"`
+	Location string `xml:"location"`
+	Timeout  string `xml:"timeout"`
 }
 
 type ReadOptionsError struct {
@@ -54,10 +61,16 @@ func ReadOptions(configpath string, opts *Options) error {
 		return &ReadOptionsError{Status: 3, Msg: msg}
 	}
 
-	//output, _ := xml.Marshal(opts)
-	//fmt.Println(string(output))
+	// 읽어들인 옵션 정보 출력
+	result, err_Marshal := xml.MarshalIndent(opts, "", "\t")
+	if err_Marshal != nil {
+		msg := "xml marshal fail"
+		return &ReadOptionsError{Status: 4, Msg: msg}
+	}
 
-	//fmt.Println(opts)
+	fmt.Printf("\n============================ ReadOptions ============================\n")
+	fmt.Println(string(result))
+	fmt.Printf("============================ ReadOptions ============================\n\n")
 
 	return nil
 }
