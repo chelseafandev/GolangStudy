@@ -127,6 +127,8 @@ func send_400_response(w http.ResponseWriter, resp_msg string, resp_code int) {
 handler 함수
 
 함수 내부 구현은 처리 내용에 따라 달라질 수 있음 :)
+
+handleRequest 함수 내부를 pipeline으로 구현해볼 수 있을까?
 */
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 
