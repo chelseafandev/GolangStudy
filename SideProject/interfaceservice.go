@@ -22,7 +22,6 @@ func main() {
 		return
 	}
 
-	fmt.Println("===================")
 	fmt.Println("start https server!!")
 	https_server.StartServer(options.Https.Ip, options.Https.Port, options.Https.Location, options.Https.Certpath, options.Https.Keypath)
 }
