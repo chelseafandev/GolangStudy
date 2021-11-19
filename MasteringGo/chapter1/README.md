@@ -85,6 +85,21 @@ go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술
 
     replace learngo/banking v1.16.0 => ./banking
     ```
+4. main package에서 import 및 호출
+   
+	```go
+	import (
+		banking "learngo/banking"
+	)
+
+	func main() {
+		...
+
+		banking.함수명()
+
+		...
+	}
+	```
 
 #### 외부 패키지 사용하기
 go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설명하겠다.
