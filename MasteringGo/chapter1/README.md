@@ -83,7 +83,7 @@ go module을 기반으로한 로컬 및 외부 패키지 사용 방법을 기술
 
     require learngo/banking v1.16.0
 
-    replace learngo/banking v1.16.0 => ./ banking
+    replace learngo/banking v1.16.0 => ./banking
     ```
 
 #### 외부 패키지 사용하기
@@ -101,7 +101,7 @@ go module을 활용하여 외부 패키지를 사용하는 방법에 대해 설�
 	    learngo/banking v1.16.0
     )
 
-    replace learngo/banking v1.16.0 => ./ banking
+    replace learngo/banking v1.16.0 => ./banking
     ```
 
 2. 소스에 패키지 정보를 import
