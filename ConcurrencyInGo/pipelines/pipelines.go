@@ -3,14 +3,46 @@ Golang 공식 블로그
 
 Go Concurrency Patterns: Pipelines and cancellation
 https://blog.golang.org/pipelines#TOC_3.
+
+
+Here are the guidelines for pipeline construction:
+- stages close their outbound channels when all the send operations are done.
+- stages keep receiving values from inbound channels until those channels are closed or the senders are unblocked.
 */
 package main
 
 import (
+	explicitcancellation "GolangStudy/ConcurrencyInGo/pipelines/explicitcancellation"
 	fanoutfanin "GolangStudy/ConcurrencyInGo/pipelines/fanoutfanin"
 	squaringnumbers "GolangStudy/ConcurrencyInGo/pipelines/squaringnumbers"
 	"fmt"
 )
+
+func fibonacci(c chan int, quit chan struct{}) {
+	x, y := 0, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
+}
+
+func fibonaccitest() {
+	c := make(chan int)
+	quit := make(chan struct{})
+
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-c)
+		}
+		close(quit)
+	}()
+	fibonacci(c, quit)
+}
 
 func testcase1() {
 	// gen -> sq -> main
@@ -37,6 +69,28 @@ func testcase2() {
 	}
 }
 
+// explicit cancellation
+func testcase3() {
+	// Set up a done channel that's shared by the whole pipeline,
+	// and close that channel when this pipeline exits, as a signal
+	// for all the goroutines we started to exit.
+	done := make(chan struct{})
+	defer close(done)
+
+	in := explicitcancellation.Gen(2, 3)
+
+	c1 := explicitcancellation.Sq(done, in)
+	c2 := explicitcancellation.Sq(done, in)
+
+	out := explicitcancellation.Merge(done, c1, c2)
+	fmt.Println(<-out)
+	fmt.Println(<-out)
+}
+
+func testcase4() {
+	fibonaccitest()
+}
+
 func main() {
 	fmt.Println("== testcase1. squaring numbers ==")
 	testcase1()
@@ -45,4 +99,13 @@ func main() {
 	fmt.Println("== testcase2. fan-out, fan-in ==")
 	testcase2()
 	fmt.Printf("=================================\n\n")
+
+	fmt.Println("== testcase3. explicit cancellation ==")
+	testcase3()
+	fmt.Printf("=======================================\n\n")
+
+	fmt.Println("== testcase4. fibonacci ==")
+	testcase4()
+	fmt.Printf("=======================================\n\n")
+
 }
