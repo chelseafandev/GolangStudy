@@ -8,6 +8,11 @@ https://blog.golang.org/pipelines#TOC_3.
 Here are the guidelines for pipeline construction:
 - stages close their outbound channels when all the send operations are done.
 - stages keep receiving values from inbound channels until those channels are closed or the senders are unblocked.
+
+Conclusion
+This article has presented techniques for constructing streaming data pipelines in Go.
+Dealing with failures in such pipelines is tricky, since each stage in the pipeline may block attempting to send values downstream, and the downstream stages may no longer care about the incoming data.
+We showed how closing a channel can broadcast a “done” signal to all the goroutines started by a pipeline and defined guidelines for constructing pipelines correctly.
 */
 package main
 
