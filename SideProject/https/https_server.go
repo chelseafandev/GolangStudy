@@ -235,6 +235,14 @@ func StartServer(ip string, port int, location string, cert string, key string) 
 	http.HandleFunc(location, callback)
 
 	// start tls server
+	//
+	// func (srv *Server) Serve(l net.Listener) error
+	//  Serve accepts incoming connections on the Listener l, creating a new service goroutine for each.
+	//  The service goroutines read requests and then call srv.Handler to reply to them.
+	//
+	//  HTTP/2 support is only enabled if the Listener returns *tls.Conn connections and they were configured with "h2" in the TLS Config.NextProtos.
+	//
+	//  Serve always returns a non-nil error and closes l. After Shutdown or Close, the returned error is ErrServerClosed.
 	err := http.ListenAndServeTLS(conn_info, cert, key, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
