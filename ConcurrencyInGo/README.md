@@ -1,5 +1,16 @@
 # Concurrency in Go
 
+- [Concurrency in Go](#concurrency-in-go)
+  - [동시성이 어려운 이유](#동시성이-어려운-이유)
+  - [복잡성 속의 단순함](#복잡성-속의-단순함)
+  - [고루틴](#고루틴)
+  - [sync 패키지](#sync-패키지)
+    - [WaitGroup](#waitgroup)
+    - [Mutex와 RWMutex](#mutex와-rwmutex)
+    - [Cond](#cond)
+
+<br>
+
 ## 동시성이 어려운 이유
 - **레이스 컨디션**<br>
 대부분 이 문제는 하나의 동시 작업이 어떤 변수를 읽으려고 시도하는 동안 또 다른 동시 작업이 특정할 수 없는 시점에 동일 변수에 값을 쓰려고 하는 데이터 레이스인 것으로 밝혀졌다.<br><br>
@@ -173,7 +184,30 @@ sync.RWMutex는 Mutex와 동일하게 메모리에 대한 접근을 보호한다
 
 ```go
 c := sync.NewCond(&sync.Mutex{})
-queue := make([]interface{}, 0, 10)
+queue := make([]interface{}, 0, 10) // Empty interfaces match to any type (like generic)
+
+removeFromQueue := func(delay time.Duration) {
+    time.Sleep(delay)
+    c.L.Lock()
+    queue = queue[1:]
+    fmt.Println("Removed from queue")
+    c.L.Unlock()
+    c.Signal() // Broadcast() method
+}
+
+for i := 0; i < 10; i++ {
+    c.L.Lock()
+    for len(queue) == 2 {
+        c.Wait()
+    }
+
+    fmt.Println("Adding to queue")
+    queue = append(queue, struct{}{})
+    go removeFromQueue(1*time.Second)
+    c.L.Unlock()
+}
 ```
 
-Wait에 대한 호출은 단지 멈춰서 대기하는 것이 아니라, 현재 고루틴을 일시 중단해 다른 고루틴이 OS 스레드에서 실행될 수 있도록 한다. Wait를 호출하면 몇몇 다른 작업도 이루어진다. 진입할 때 Cond 변수의 Locker에서 Unlock이 호출되고, Wait가 종료되면 Cond 변수의 Locker에서 Lock이 호출된다. 조건이 발생할 때까지 기다리면서 계속 이 lock을 가지고 있는 것처럼 보이지만 실제로는 그렇지 않다.
+Wait에 대한 호출은 단지 멈춰서 대기하는 것이 아니라, 현재 고루틴을 일시 중단해 다른 고루틴이 OS 스레드에서 실행될 수 있도록 한다. Wait를 호출하면 몇몇 다른 작업도 이루어진다. 진입할 때 Cond 변수의 Locker에서 Unlock이 호출되고, Wait가 종료되면 Cond 변수의 Locker에서 Lock이 호출된다. 조건이 발생할 때까지 기다리면서 계속 이 lock을 가지고 있는 것처럼 보이지만 실제로는 그렇지 않다.<br><br>
+
+이 예제에서는 Signal이라는 새로운 메서드도 등장한다. 내부적으로 런타임은 신호가 오기를 기다리는 고루틴들의 FIFO(First In First Out) 목록을 유지한다. Signal 메서드는 가장 오래 기다린 고루틴을 찾아서 알려주는 반면, Brodcast는 기다리고 있는 모든 고루틴들에게 신호를 보낸다. (즉, Brodcast는 여러 개의 고루틴들과 한 번에 통신할 수 있는 방법을 제공함)
