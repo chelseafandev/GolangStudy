@@ -211,7 +211,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	fmt.Printf("\n============ [EDLP I/F] request data ============\n")
+	fmt.Printf("\n============ request data ============\n")
 	fmt.Printf("session: %s\n", r.RemoteAddr)
 	fmt.Printf("url: %s\n", rd.Url)
 	fmt.Printf("user_id: %s\n", rd.User_id)
@@ -221,7 +221,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("onedept_url: %s\n", onedepth_url)
 	fmt.Printf("full_url: %s\n", full_url)
 	fmt.Printf("location: %s", location)
-	fmt.Printf("\n============ [EDLP I/F] request data ============\n\n")
+	fmt.Printf("\n============ request data ============\n\n")
 
 	send_200_response(w)
 }
