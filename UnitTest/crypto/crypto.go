@@ -131,22 +131,29 @@ func (mc *MyCrypto) pkcs7_padding(data []byte, block_size int) ([]byte, error) {
 		return nil, fmt.Errorf("invalid block size %d", block_size)
 	}
 
+	// block_size를 기준으로 padding이 필요한 길이를 구하고
 	padlen := 1
 	for ((len(data) + padlen) % block_size) != 0 {
 		padlen = padlen + 1
 	}
 
+	// `padding 필요한 길이` 값을 padding할 공간에 삽입
 	pad := bytes.Repeat([]byte{byte(padlen)}, padlen)
 	return append(data, pad...), nil
 }
 
 func (mc *MyCrypto) pkcs7_unpadding(data []byte) ([]byte, error) {
+	// data의 마지막 byte의 값을 통해 padding 길이를 찾고
 	padlen := int(data[len(data)-1])
+
+	// 실제 padding 길이만큼 padding을 수행했는지를 검사하고
 	pad := data[len(data)-padlen:]
 	for i := 0; i < padlen; i++ {
 		if pad[i] != byte(padlen) {
 			return nil, fmt.Errorf("invalid padding")
 		}
 	}
+
+	// padding을 제외한 만큼만 반환
 	return data[:len(data)-padlen], nil
 }
