@@ -18,8 +18,8 @@
         <ip>127.0.0.1</ip>
         <port>18443</port>
         <location>/test</location>
-        <certpath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.crt</certpath>
-        <keypath>/home/bluetomorrow/go/src/GolangStudy/SideProject/https/certs/server.key</keypath>
+        <certpath>/home/bluetomorrow/go/src/GolangStudy/SideProject/pkg/https/certs/server.crt</certpath>
+        <keypath>/home/bluetomorrow/go/src/GolangStudy/SideProject/pkg/https/certs/server.key</keypath>
         <timeout>60</timeout>
     </https>
 </options>
