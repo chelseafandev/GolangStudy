@@ -1,3 +1,3 @@
-module GolangStudy/SideProject/pkg/xmlparser
+module xmlparser
 
 go 1.18

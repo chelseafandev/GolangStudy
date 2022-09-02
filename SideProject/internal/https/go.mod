@@ -1,4 +1,4 @@
-module GolangStudy/SideProject/pkg/https
+module https
 
 go 1.18
 

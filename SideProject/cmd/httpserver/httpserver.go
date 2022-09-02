@@ -1,8 +1,8 @@
 package main
 
 import (
-	https_server "GolangStudy/SideProject/https"
-	xmlparser "GolangStudy/SideProject/xmlparser"
+	"https"
+	"xmlparser"
 	"errors"
 	"fmt"
 	"log"
@@ -23,5 +23,5 @@ func main() {
 	}
 
 	fmt.Println("start https server!!")
-	https_server.StartServer(options.Https.Ip, options.Https.Port, options.Https.Location, options.Https.Certpath, options.Https.Keypath)
+	https.StartServer(options.Https.Ip, options.Https.Port, options.Https.Location, options.Https.Certpath, options.Https.Keypath)
 }
