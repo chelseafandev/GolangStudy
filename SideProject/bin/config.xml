@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+    <http>
+        <session>
+            <ip>127.0.0.1</ip>
+            <port>18888</port>
+            <location>/test1</location>
+            <timeout>30</timeout>
+        </session>
+        <session>
+            <ip>127.0.0.1</ip>
+            <port>18889</port>
+            <location>/test2</location>
+            <timeout>40</timeout>
+        </session>
+    </http>
+    <https>
+        <ip>127.0.0.1</ip>
+        <port>18443</port>
+        <location>/test</location>
+        <certpath>/home/bluetomorrow/go/src/GolangStudy/SideProject/bin/certs/server.crt</certpath>
+        <keypath>/home/bluetomorrow/go/src/GolangStudy/SideProject/bin/certs/server.key</keypath>
+        <timeout>60</timeout>
+    </https>
+</options>
