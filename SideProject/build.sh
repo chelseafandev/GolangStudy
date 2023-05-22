@@ -3,10 +3,10 @@
 
 module=${1}
 
-if [ "${module}" = "httpserver" ];
+if [ "${module}" = "restapi" ];
 then
 	cd cmd/${module}
-	go build -o ../../bin/${module} main.go
+	go build -o ../../bin/${module} restapi.go
 else
 	echo "nope"
 fi

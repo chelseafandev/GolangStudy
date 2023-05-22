@@ -1,4 +1,4 @@
-module https
+module github.com/chelseafandev/resetapi
 
 go 1.18
 

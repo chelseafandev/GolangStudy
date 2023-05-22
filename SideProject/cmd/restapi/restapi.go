@@ -1,11 +1,12 @@
 package main
 
 import (
-	"https"
-	"xmlparser"
 	"errors"
 	"fmt"
 	"log"
+
+	"github.com/chelseafandev/resetapi/internal/https"
+	"github.com/chelseafandev/resetapi/internal/xmlparser"
 )
 
 func main() {
